@@ -140,3 +140,47 @@ class Agente:
                 return True
 
         return False
+
+
+    def set_position_by_moviment_DEMO(self, moviment:int) -> bool:
+    
+        if moviment == 0:
+            if (self.posicao[0] - 1) >= 0:
+                return (self.posicao[0] - 1, self.posicao[1])
+
+        elif moviment == 1:
+            if ((self.posicao[0] - 1) >= 0) and ((self.posicao[1] + 1) <= 9):
+                return (self.posicao[0] - 1, self.posicao[1] + 1)
+            
+
+        elif moviment == 2:
+            if ((self.posicao[1] + 1) <= 9):
+                return (self.posicao[0], self.posicao[1] + 1)
+                
+
+        elif moviment == 3:
+            if ((self.posicao[0] + 1 <= 9) and ((self.posicao[1] + 1) <= 9)):
+                return (self.posicao[0] + 1, self.posicao[1] + 1)
+                
+            
+        elif moviment == 4:
+            if ((self.posicao[0] + 1) <= 9):
+                return (self.posicao[0] + 1, self.posicao[1])
+                
+
+        elif moviment == 5:
+            if ((self.posicao[0] + 1) <= 9) and ((self.posicao[1] - 1) >= 0):
+                return (self.posicao[0] + 1, self.posicao[1] - 1)
+            
+
+        elif moviment == 6:
+            if ((self.posicao[1] - 1) >= 0):
+                return (self.posicao[0], self.posicao[1] - 1)
+                
+
+        elif moviment == 7:
+            if ((self.posicao[0] - 1) >= 0) and ((self.posicao[1] - 1) >= 0):
+                return (self.posicao[0] - 1, self.posicao[1] - 1)
+                
+
+        return self.posicao

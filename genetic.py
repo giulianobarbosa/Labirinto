@@ -1,33 +1,48 @@
 from Labirinto import Labirinto
 from Agente import Agente
 import random
+from time import sleep
 
 #
 #(line, column)
 
-def aptidao(agente:Agente) -> float:
+def aptidao(agente:Agente, lab:Labirinto=None) -> float:
 
     global foodie
     foodie = 0
     # foodie = 0
     for i in range(len(agente.movimentos)): 
+        
+        # if lab:
+            # print()
+            # lab.get_mapp()
 
         moviment = agente.movimentos[i]
-        agente.set_position_by_moviment(moviment=moviment)
         agente.feet += 1
-        if lab.mapp[agente.posicao[0]][agente.posicao[1]] == "c":
-            # print(agente.posicao)
-            lab.mapp[agente.posicao[0]][agente.posicao[1]] = 0
-            foodie += 1
-            # print("comi")
-            agente.foodie += 1
-            # print(agente.foodie)
+        new_position = agente.set_position_by_moviment_DEMO(moviment=moviment)
+        
+        if not lab.mapp[new_position[0]][new_position[1]] == "1":
+        
+            agente.posicao = new_position
+        
+            if lab.mapp[agente.posicao[0]][agente.posicao[1]] == "c":
+                # print(agente.posicao)
+                lab.mapp[agente.posicao[0]][agente.posicao[1]] = "A"
+                foodie += 1
+                # print("comi")
+                agente.foodie += 1
+                # print(agente.foodie)
+            else:
+                # print("Não achei comida")
+                lab.mapp[agente.posicao[0]][agente.posicao[1]] = "A"
         else:
-            # print("Não achei comida")
+            # print(agente.posicao)
             ...
+
         agente.aptidao += (agente.feet**(agente.feet - foodie))
         if foodie == 5:
             break
+        # sleep(2)
 
 
 def torneio(population:list) -> tuple:
@@ -39,7 +54,11 @@ def torneio(population:list) -> tuple:
 def crossover(parents:tuple) -> Agente:
 
     child = Agente()
-    child.movimentos = parents[0].movimentos[0:50] + parents[1].movimentos[50:100]
+    parents_order = random.randint(0,1)
+    if parents_order == 0:
+        child.movimentos = parents[0].movimentos[0:50] + parents[1].movimentos[50:100]
+    else:
+        child.movimentos = parents[1].movimentos[0:50] + parents[0].movimentos[50:100]
     return child
 
 
@@ -74,7 +93,7 @@ for p in range(geracoes):
             agente.set_random_moviments(100)
             # print()
             # print(agente.movimentos)
-            aptidao(agente)
+            aptidao(agente, lab)
             # print(foodie)
             # print(agente.aptidao)
             population.append(agente)
@@ -82,12 +101,13 @@ for p in range(geracoes):
         else:
             agente = crossover(bests)
             agente = mutation(agente)
-            aptidao(agente)
+            aptidao(agente, lab)
             # print(agente.movimentos)
             
             population.append(agente)
-
+        # exit()
     bests = torneio(population)
     # print(bests[0].feet, bests[1].feet)
-    if bests[0].foodie > 0 or bests[1].foodie > 0:
-        print(bests[0].foodie, bests[1].foodie)
+
+        # print(bests[0].foodie, bests[1].foodie)
+    print(bests[0].foodie)
