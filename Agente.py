@@ -1,5 +1,7 @@
 import random
 
+from Labirinto import Labirinto
+
 
 class Agente:
 
@@ -11,6 +13,7 @@ class Agente:
         self.posicao = posicao
         self.feet = 0
         self.foodie = 0
+        self.lab = []
         #[baixo, baixo, esquerda, direita, cima, cima...]
         #[
         # norte = 0
@@ -29,6 +32,14 @@ class Agente:
         self.mutation_factor = mutation_factor
         self.aptidao = 0
     
+    @property
+    def lab(self) -> Labirinto:
+        return self._lab
+
+    @lab.setter
+    def lab(self, value) -> None:
+        self._lab = value
+
     @property
     def id(self) -> int:
         return self._id

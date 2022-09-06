@@ -13,10 +13,7 @@ def aptidao(agente:Agente, lab:Labirinto=None) -> float:
     # foodie = 0
     for i in range(len(agente.movimentos)): 
         
-        # if lab:
-            # print()
-            # lab.get_mapp()
-
+        
         moviment = agente.movimentos[i]
         agente.feet += 1
         new_position = agente.set_position_by_moviment_DEMO(moviment=moviment)
@@ -42,7 +39,9 @@ def aptidao(agente:Agente, lab:Labirinto=None) -> float:
         agente.aptidao += (agente.feet**(agente.feet - foodie))
         if foodie == 5:
             break
-        # sleep(2)
+    if lab:
+        agente.lab = lab
+        
 
 
 def torneio(population:list) -> tuple:
@@ -53,6 +52,9 @@ def torneio(population:list) -> tuple:
 
 def crossover(parents:tuple) -> Agente:
 
+    # mutation_probability = ((parents[0].aptidao) + (parents[1].aptidao))/2
+    # print(parents[0].aptidao)
+    # child = Agente(mutation_probability=mutation_probability)
     child = Agente()
     parents_order = random.randint(0,1)
     if parents_order == 0:
@@ -65,7 +67,14 @@ def crossover(parents:tuple) -> Agente:
 def mutation(child:Agente) -> Agente:
 
     if random.random() < child.mutation_probability:
+        # print("MUTOU")
+        
+        cromossomo_de_mutacao = random.randint(0,99)
+        # for i in range(cromossomo_de_mutacao,len(child.movimentos)):
+        #     child.movimentos[i] = [random.randint(0,8)]
+        # # child.movimentos[cromossomo_de_mutacao:] = random.randint(0,8)
         child.movimentos[random.randint(0,99)] = random.randint(0,8)
+        # child.movimentos[random.randint(0,99)] = random.randint(0,8)
     return child
 
 
@@ -90,7 +99,7 @@ for p in range(geracoes):
 
         if p == 0:
             agente = Agente(id=individuo, mutation_factor=mutation_factor, mutation_probability=mutation_probability)
-            agente.set_random_moviments(100)
+            agente.set_random_moviments(1000)
             # print()
             # print(agente.movimentos)
             aptidao(agente, lab)
@@ -111,3 +120,5 @@ for p in range(geracoes):
 
         # print(bests[0].foodie, bests[1].foodie)
     print(bests[0].foodie)
+    # bests[0].lab.get_mapp()
+    # sleep(2)
