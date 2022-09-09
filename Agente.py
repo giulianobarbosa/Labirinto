@@ -8,12 +8,13 @@ class Agente:
     def __init__(self, id:int=None, posicao:tuple=(0,0), movimentos:list=[], mutation_factor:float=0.5, 
                     mutation_probability:float=0.5) -> None:
         #1
-        self.id = id
+        self.id = 0
         #(0,0)
         self.posicao = (0,0)
         self.feet = 0
-        self.foodie = 0
+        self.food = 0
         self.lab = []
+        self.last_good_feet = ()
         #[baixo, baixo, esquerda, direita, cima, cima...]
         #[
         # norte = 0
@@ -27,17 +28,25 @@ class Agente:
         # ]
         self.movimentos = []
         #Probability of a mutation happen
-        self.mutation_probability = mutation_probability
+        self.mutation_probability = 0.5
         #How much the agent will mutate
-        self.mutation_factor = mutation_factor
+        self.mutation_factor = 0.5
         self.aptidao = 0
+
+    @property
+    def last_good_feet(self) -> int:
+        return self._last_good_feet
+
+    @last_good_feet.setter
+    def last_good_feet(self, value:int) -> None:
+        self._last_good_feet = value
     
     @property
     def lab(self) -> Labirinto:
         return self._lab
 
     @lab.setter
-    def lab(self, value) -> None:
+    def lab(self, value:list) -> None:
         self._lab = value
 
     @property
@@ -65,12 +74,12 @@ class Agente:
         self._feet = value
 
     @property
-    def foodie(self) -> int:
-        return self._foodie
+    def food(self) -> int:
+        return self._food
 
-    @foodie.setter
-    def foodie(self, value) -> None:
-        self._foodie = value
+    @food.setter
+    def food(self, value) -> None:
+        self._food = value
 
     @property
     def movimentos(self) -> list:
@@ -85,7 +94,7 @@ class Agente:
         return self._mutation_probability
 
     @mutation_probability.setter
-    def mutation_probability(self,value) -> None:
+    def mutation_probability(self,value:float) -> None:
         self._mutation_probability = value
 
     @property
@@ -93,15 +102,15 @@ class Agente:
         return self._mutation_factor
 
     @mutation_factor.setter
-    def mutation_factor(self,value) -> None:
+    def mutation_factor(self,value:float) -> None:
         self._mutation_factor = value
 
     @property
-    def aptidao(self) -> int:
+    def aptidao(self) -> float:
         return self._aptidao
 
     @aptidao.setter
-    def aptidao(self, value) -> None:
+    def aptidao(self, value:float) -> None:
         self._aptidao = value
 
     def set_random_moviments(self, size:int=100):
