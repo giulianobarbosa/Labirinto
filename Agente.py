@@ -10,7 +10,7 @@ class Agente:
         #1
         self.id = id
         #(0,0)
-        self.posicao = posicao
+        self.posicao = (0,0)
         self.feet = 0
         self.foodie = 0
         self.lab = []
@@ -105,7 +105,7 @@ class Agente:
         self._aptidao = value
 
     def set_random_moviments(self, size:int=100):
-        self.movimentos = [random.randint(0,8) for i in range(size)]
+        self.movimentos = [random.randint(0,7) for i in range(size)]
 
     def set_position_by_moviment(self, moviment:int) -> bool:
     
