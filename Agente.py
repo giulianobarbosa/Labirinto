@@ -8,7 +8,7 @@ class Agente:
     def __init__(self, id:int=None, posicao:tuple=(0,0), movimentos:list=[], mutation_factor:float=0.5, 
                     mutation_probability:float=0.5) -> None:
         #1
-        self.id = 0
+        self.id = id
         #(0,0)
         self.posicao = (0,0)
         self.feet = 0
@@ -163,6 +163,8 @@ class Agente:
 
 
     def set_position_by_moviment_DEMO(self, moviment:int) -> bool:
+
+        #MUDAR O 9 PARA O N DO LABIRINTO
     
         if moviment == 0:
             if (self.posicao[0] - 1) >= 0:
