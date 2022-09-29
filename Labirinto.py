@@ -37,7 +37,7 @@ class Labirinto:
 
         for content in self.mappa:
 
-            self.put_in_mapp([item for item in content if item != " "])
+            self.put_in_mapp([item.lower() for item in content if item != " "])
 
 
 if __name__ == "__main__":

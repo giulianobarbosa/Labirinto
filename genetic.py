@@ -5,7 +5,7 @@ import random
 import time
 
 #Função de aptidao
-def aptidao(agente:Agente, lab:Labirinto, saving:bool=False) -> float:
+def aptidao(agente:Agente, lab:Labirinto, saving:bool=False, log:bool=True) -> float:
 
     """
     Essa função irá retornar o quão apto o agente passado para ela está para enfrentar o desafio do labirinto
@@ -49,6 +49,7 @@ def aptidao(agente:Agente, lab:Labirinto, saving:bool=False) -> float:
         else:
             break
 
+
         #Verificando se é para salvar
         if saving:
             #Tenta sobreescrever um arquivo já existente
@@ -80,6 +81,19 @@ def aptidao(agente:Agente, lab:Labirinto, saving:bool=False) -> float:
     agente.lab = lab.mapp
     #printa a aptidao e id do agente
     print(agente.aptidao, agente.id)
+    
+    #Verificando se é para salvar o log dos agentes
+    if log:
+        #Tenta sobreescrever um arquivo já existente
+        try:
+            with open("log_id_aptidao.txt", "a") as f:
+                f.write(f"\n id: {agente.id}, aptidao{agente.aptidao}\n")
+
+        # Se falhou a sobreescrever o arquivo não existe, logo nós criamos e escrevemos nele
+        except:
+            with open("log_id_aptidao.txt", "w") as f:
+                f.write(f"\n id: {agente.id}, aptidao{agente.aptidao}\n")
+
 
 #Função que ordena o vetor de população e retorna uma tupla com os dois melhores agentes
 def torneio(population:list) -> Tuple[Agente]:
@@ -142,7 +156,7 @@ def reset_generation(individuos, mutation_factor, mutation_probability):
     for individuo in range(0, individuos):
         #Bloco que cria o labirinto
         lab = Labirinto()
-        with open("test.txt") as f:
+        with open("Labirinto.txt") as f:
             text = f.read()
             f.close()
         lab.make_mapp(text)
@@ -162,7 +176,7 @@ def reset_generation(individuos, mutation_factor, mutation_probability):
 
 #Parametros universais para individuos e geracoes
 individuos:int = 100
-geracoes:int = 100
+geracoes:int = 1000
 mutation_factor:float = 0.1
 mutation_probability:float = 0.8
 
@@ -174,6 +188,15 @@ first_population = reset_generation(individuos=individuos, mutation_factor=mutat
 bests = torneio(first_population)
 #Printando O MELHOR individuo
 print("MELHOR APTIDAO DA GERAÇÃO ", bests[0].aptidao, bests[0].food)
+#Tenta sobreescrever um arquivo já existente
+try:
+    with open("log_melhor_da_geracao.txt", "a") as f:
+        f.write(f"\ngeracao: {geracao} id: {bests[0].id}, aptidao{bests[0].aptidao}\n")
+
+# Se falhou a sobreescrever o arquivo não existe, logo nós criamos e escrevemos nele
+except:
+    with open("log_melhor_da_geracao.txt", "w") as f:
+        f.write(f"\ngeracao: {geracao} id: {bests[0].id}, aptidao{bests[0].aptidao}\n")
 
 #Loop que gerará as próximas gerações
 while True:
@@ -188,7 +211,7 @@ while True:
         
         #Cria o labirinto
         lab = Labirinto()
-        with open("test.txt") as f:
+        with open("Labirinto.txt") as f:
             text = f.read()
             f.close()
         lab.make_mapp(text)
@@ -225,13 +248,23 @@ while True:
     #Pegando os melhores individuos
     bests = torneio(population)
     print("MELHOR APTIDAO DA GERAÇÃO ", bests[0].aptidao, bests[0].food)
+    #Tenta sobreescrever um arquivo já existente
+    try:
+        with open("log_melhor_da_geracao.txt", "a") as f:
+            f.write(f"\ngeracao: {geracao} id: {bests[0].id}, aptidao{bests[0].aptidao}\n")
+
+    # Se falhou a sobreescrever o arquivo não existe, logo nós criamos e escrevemos nele
+    except:
+        with open("log_melhor_da_geracao.txt", "w") as f:
+            f.write(f"\ngeracao: {geracao} id: {bests[0].id}, aptidao{bests[0].aptidao}\n")
 
     #Critérios de parada
     if bests[0].food == 5 or geracao > geracoes:
-        print("ACHOU AS COMIDAS")
+        if bests[0].food == 5:
+            print("ACHOU AS COMIDAS")
         #bloco para criar o documento de texto de movimentos do individuo que completou
         lab = Labirinto()
-        with open("test.txt") as f:
+        with open("Labirinto.txt") as f:
             text = f.read()
             f.close()
         lab.make_mapp(text)
